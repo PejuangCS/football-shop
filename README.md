@@ -22,7 +22,8 @@ Melakukan deployment ke PWS terhadap aplikasi yang sudah dibuat sehingga nantiny
 Checklist kedelapan
 Membuat sebuah README.md yang berisi tautan menuju aplikasi PWS yang sudah di-deploy, serta jawaban dari beberapa pertanyaan berikut:
 
-##Kaitan Url, View, Model, dan HTML ![bagan]("Bagan PBP.drawio.png")
+##Kaitan Url, View, Model, dan HTML 
+![bagan](Bagan_PBP.png)
 
 1. Mendapat request dari user melalui django memberikan request http
 2. Dilanjutkan proses identifikasi melalui urls.py dengan fungsi pada views.py
