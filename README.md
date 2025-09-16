@@ -1,3 +1,5 @@
+# Tugas 2 PBP
+
 Checklist pertama 
 Membuat proyek django: sebelum membuat proyek django kita perlu menyiapkan environtment tersendiri agar terisolasi dan tidak bertabrakan dengan sistem/versi di komputer kita, setelah itu kita membuat requirements.txt yang berisi dependencies/ library external untuk proyek kita. Setelah itu install dan start proyek django. 
 
@@ -42,3 +44,30 @@ Karena django memiliki alur yang jelas yaitu mengikuti pola MVT dan menggunakan 
 
 Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
 Untuk saat ini tidak ada, karena asisten dosen dan dosen telah melaksanakan tugasnya dengan baik dan jelas. Terimakasih
+
+----------------------------------------------------------------------------------------------------
+
+# Tugas 3 PBP
+
+Checklist pertama: Data delivery adalah hal yang sangat penting dalam pembuatan platform untuk memastikan interaksi antara user dengan user lainnya berjalan lancar tanpa adanya kesalahan data, menjaga konsistensi dan integritas data secara realtime dan lain lain
+
+Checklist kedua: JSON karena JSON adalah sebuah format yang dirancang agar mudah dimengerti karena setiap elemennya mendeskripsikan dirinya sendiri atau self describing. Alasan JSON lebih populer dibanding XML pada saat ini karena XML lebih strict apalagi terkait case-sensitive yang mana kurang cocok untuk pemrograman modern
+
+Checklist ketiga: method is_valid() adalah method form yang memastikan semua fields terisi dan sesuai oleh karena itu kita membutuhkannya untuk memvalidasi input user
+
+Checklist keempat: csrf_token adalah security untuk mencegah serangan berbahaya. Jika kita tidak menggunakan csrf_token dalam form kita dapat diserang dengan cara mengirim request ke server kita melalui server lain yg sedang kita gunakan hal ini dapat berakibat fatal karena server kita dapat menerima request dari server lain tersebut.
+
+Checklist kelima: membuat 4 fungsi views baru  yaitu show_xml,show_json,show_xml_by_id,show_json_by_id dengan cara menerima semua objek product untuk tanpa id, atau menerima satu objek product untuk by id kemudian diubah ke data delivery yang kita inginkan dengan serializers diakhiri dengan menyusun responnya melalui httpresponse
+
+Dilanjut dengan membuat path ke fungsi tersebut untuk menghasilkan url yang dapat diakses untuk by id ditambah format yang didapat dari id product
+
+Dilanjut membuat fungsi create_product yang berisi form untuk semua atribut pada model dan show_product untuk  menampilkannya yang mana akan dirender ke create_product.html dan product_detail.html. Setelah itu, menambah path sesuai fungsi pada views dan membuat create_product.html dan product_detail.html. Kemudian, memodifikasi main.html dengan menambahkan button untuk mendirect ke create_product.html yang berisi form serta button untuk mendirect ke product_detail.html yang berguna untuk melihat detail dari product
+
+Untuk feedback saat ini asdos sudah mengerjakan tugasnya dengan baik dan memberikan penjelasan yang cukup lengkap pada tutorial terimakasih
+
+## Screnshoot di postman
+![xml](Show_XML.png)
+![xml_by_id](Show_XML_by_id.png)
+![json](Show_JSON.png)
+![json_by_id](Show_JSON_by_id.png)
+
