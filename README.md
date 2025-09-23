@@ -24,7 +24,7 @@ Melakukan deployment ke PWS terhadap aplikasi yang sudah dibuat sehingga nantiny
 Checklist kedelapan
 Membuat sebuah README.md yang berisi tautan menuju aplikasi PWS yang sudah di-deploy, serta jawaban dari beberapa pertanyaan berikut:
 
-##Kaitan Url, View, Model, dan HTML 
+## Kaitan Url, View, Model, dan HTML 
 ![bagan](Bagan_PBP.png)
 
 1. Mendapat request dari user melalui django memberikan request http
@@ -70,4 +70,17 @@ Untuk feedback saat ini asdos sudah mengerjakan tugasnya dengan baik dan memberi
 ![xml_by_id](Show_XML_by_id.png)
 ![json](Show_JSON.png)
 ![json_by_id](Show_JSON_by_id.png)
+
+# Tugas 4 PBP
+Checklist pertama: Django Authentication form adalah form bawaan django yang digunakan untuk autentikasi user. Form ini memiliki default username dan password
+
+Checklist kedua: Autentikasi adalah untuk memverifikasi user sebagai tindakan keamanan, sedangkan otorisasi adalah untuk menentukan apa saja yang boleh dilakukan user. Implementasinya adalah fitur login untuk autentikasi dan fitur create_product untuk otorisasi user
+
+Checklist ketiga: kelebihan session adalah lebih aman karena berada pada sisi web server sedangkan kekurangannya adalah lebih berat dari cookies
+kelebihan cookies adalah lebih ringan namun kekurangannya adalah lebih rentan karena berada pada
+sisi client server
+
+Checklist keempat: Tidak, karena cookies berada pada client server. Cara django menanganinya adalah dengan http,csrftoken dan session ID
+
+Checklist kelima: Membuat form registrasi yang akan diconnect ke data user dan password dengan import usercreationform dan membuat register.html, kemudian mengimport login logout di django dan membuat login.html, dilanjut dengan mengstrict main.html dan product_detail.html untuk login terlebih dahulu, kemudian membuat akun di localhost dan membuat 3 product,mengimport User dari django dan memasukkannya ke models.py pada class product kemudian menghubungkannya melalui views tambahkan detail di main.html dan product_detail. Terakhir menggunakan data dari cookies untuk last login dan memperbaruinya setiap login baru terjadi
 
