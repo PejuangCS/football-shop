@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.shortcuts import render, redirect, get_object_or_404
 from main.forms import ProductForm
-from main.models import Product
+from main.models import Product,Employee
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -27,6 +27,12 @@ def show_main(request):
         'last_login': request.COOKIES.get('last_login', 'Never'),
     }
     return render(request, "main.html", context)
+def add_employee(request,nama,umur,deskripsi):
+    employee=Employee.objects.create(name=nama,age=umur,persona=deskripsi)
+    context={
+        'employee':employee
+    }
+    return render(request,"add_employee.html",context)
 def create_product(request):
     form = ProductForm(request.POST or None)
 
@@ -46,6 +52,20 @@ def show_product(request, id):
         'product': product
     }
     return render(request, "product_detail.html", context)
+def edit_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+    context = {
+        'form': form
+    }
+    return render(request, "edit_product.html", context)
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
 #Implementasi Register, Login, dan Logout
 def register(request):
     form = UserCreationForm()
