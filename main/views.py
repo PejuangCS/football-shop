@@ -1,5 +1,8 @@
 import datetime
-from django.http import HttpResponseRedirect
+from django.utils.html import strip_tags
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.http import HttpResponseRedirect,JsonResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -27,6 +30,30 @@ def show_main(request):
         'last_login': request.COOKIES.get('last_login', 'Never'),
     }
     return render(request, "main.html", context)
+@csrf_exempt
+@require_POST
+def add_product_entry_ajax(request):
+    name = strip_tags(request.POST.get("name")) # strip HTML tags!
+    description = strip_tags(request.POST.get("description")) # strip HTML tags!
+    price = request.POST.get("price")
+    stock = request.POST.get("stock")
+    category = request.POST.get("category")
+    thumbnail = request.POST.get("thumbnail")
+    is_featured = request.POST.get("is_featured") == 'on'  # checkbox handling
+    user = request.user
+
+    new_product = Product(
+        name=name, 
+        description=description,
+        price=price,
+        stock=stock,
+        category=category,
+        thumbnail=thumbnail,
+        is_featured=is_featured,
+        user=user
+    )
+    new_product.save()
+    return HttpResponse(b"CREATED", status=201)
 def add_employee(request,nama,umur,deskripsi):
     employee=Employee.objects.create(name=nama,age=umur,persona=deskripsi)
     context={
@@ -103,8 +130,21 @@ def show_xml(request):
     return HttpResponse(xml_data, content_type="application/xml")
 def show_json(request):
     products_list = Product.objects.all()
-    json_data = serializers.serialize("json", products_list)
-    return HttpResponse(json_data, content_type="application/json")
+    data = [
+        {
+            'id': str(product.id),
+            'name': product.name,
+            'price' : product.price, 
+            'description': product.description,
+            'category': product.category,
+            'thumbnail': product.thumbnail,
+            'stock' : product.stock,
+            'is_featured': product.is_featured,
+            'user_id': product.user_id,
+        }
+        for product in products_list
+    ]
+    return JsonResponse(data, safe=False)
 def show_xml_by_id(request, product_id):
    try:
        product_item = Product.objects.filter(pk=product_id)
@@ -113,9 +153,20 @@ def show_xml_by_id(request, product_id):
    except Product.DoesNotExist:
        return HttpResponse(status=404)
 def show_json_by_id(request, product_id):
-   try:
-       product_item = Product.objects.get(pk=product_id)
-       json_data = serializers.serialize("json", [product_item])
-       return HttpResponse(json_data, content_type="application/json")
-   except Product.DoesNotExist:
-       return HttpResponse(status=404)
+    try:
+        product = Product.objects.select_related('user').get(pk=product_id)
+        data = {
+            'id': str(product.id),
+            'name': product.name,
+            'price' : product.price, 
+            'description': product.description,
+            'category': product.category,
+            'thumbnail': product.thumbnail,
+            'stock' : product.stock,
+            'is_featured': product.is_featured,
+            'user_id': product.user_id,
+            'user_username': product.user.username if product.user_id else None,
+        }
+        return JsonResponse(data)
+    except Product.DoesNotExist:
+        return JsonResponse({'detail': 'Not found'}, status=404)

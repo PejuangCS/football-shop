@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block meta %}
-<title> Product Detail- Football Shop</title>
+<title>Product Detail - Football Shop</title>
 {% endblock meta %}
 
 {% block content %}
@@ -15,6 +15,7 @@
                 ← Back to Home
             </a>
         </div>
+        
         <!-- Loading State -->
         <div id="loading-state" class="bg-white rounded-lg border border-gray-200 p-12 text-center">
             <svg class="animate-spin h-8 w-8 text-green-600 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -23,6 +24,7 @@
             </svg>
             <p class="text-gray-600 mt-3">Loading product detail...</p>
         </div>
+
         <!-- Error State -->
         <div id="error-state" class="bg-white rounded-lg border border-gray-200 p-12 text-center hidden">
             <div class="w-16 h-16 mx-auto mb-4">
@@ -31,8 +33,9 @@
             <h3 class="text-lg font-medium text-gray-900 mb-2">Failed to load product</h3>
             <p class="text-gray-500">Please try again later.</p>
         </div>
+        
         <!-- Article Content -->
-        <article id="product-description" class="bg-white rounded-lg border border-gray-200 overflow-hidden hidden">
+        <article id="article-description" class="bg-white rounded-lg border border-gray-200 overflow-hidden hidden">
             
             <!-- Header -->
             <div class="p-6 sm:p-8">
@@ -40,16 +43,16 @@
                     <!-- Dynamic badges will be inserted here -->
                 </div>
                 
-                <h1 id="product-name" class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
+                <h1 id="article-name" class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
                     <!-- Title will be inserted here -->
                 </h1>
                 
                 <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
-                    <span id="product-stock">
-                        <!-- Views will be inserted here -->
+                    <span id="article-stock">
+                        <!-- Stock will be inserted here -->
                     </span>
-                    <span id="product-price">
-                        <!-- Views will be inserted here -->
+                    <span id="article-price">
+                        <!-- Price will be inserted here -->
                     </span>
                 </div>
             </div>
@@ -65,7 +68,7 @@
             <!-- Content -->
             <div class="p-6 sm:p-8">
                 <div class="prose prose-lg max-w-none">
-                    <div id="product-description-text" class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
+                    <div id="article-description-text" class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
                         <!-- Content will be inserted here -->
                     </div>
                 </div>
@@ -76,7 +79,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="font-medium text-gray-900">
-                            <p id="product-seller">Seller: Loading...</p>
+                            <p id="article-seller">Seller: Loading...</p>
                         </div>
                         <p class="text-sm text-gray-500">Seller</p>
                     </div>
@@ -85,7 +88,6 @@
         </article>
     </div>
 </div>
-...
 <script>
 // Configuration
 const PRODUCT_ID = "{{ product.id }}";
@@ -94,21 +96,21 @@ const PRODUCT_DETAIL_ENDPOINT = `{% url 'main:show_json_by_id' '00000000-0000-00
 // DOM Elements
 const loadingState = document.getElementById('loading-state');
 const errorState = document.getElementById('error-state');
-const productDescription = document.getElementById('product-description');
+const articleDescription = document.getElementById('article-description');
 const badgesContainer = document.getElementById('badges-container');
-const productName = document.getElementById('product-name');
-const productStock = document.getElementById('product-stock');
-const productPrice = document.getElementById('product-price');
+const articleName = document.getElementById('article-name');
+const articleStock = document.getElementById('article-stock');
+const articlePrice = document.getElementById('article-price');
 const featuredImageContainer = document.getElementById('featured-image-container');
 const featuredImage = document.getElementById('featured-image');
-const productDescriptionText = document.getElementById('product-description-text');
-const productSeller = document.getElementById('product-seller');
+const articleDescriptionText = document.getElementById('article-description-text');
+const articleSeller = document.getElementById('article-seller');
 
 // Show/hide page sections
 function showState(state) {
     loadingState.classList.toggle('hidden', state !== 'loading');
     errorState.classList.toggle('hidden', state !== 'error');
-    productDescription.classList.toggle('hidden', state !== 'ready');
+    articleDescription.classList.toggle('hidden', state !== 'ready');
 }
 
 // Get readable category name
@@ -125,9 +127,9 @@ function getCategoryLabel(categoryCode) {
 }
 
 // Render article content
-function renderProduct(product) {
+function renderArticle(product) {
     // Set title
-    productName.textContent = product.name;
+    articleName.textContent = product.name;
     document.title = `${product.name} - Football Shop`;
     
     // Set badges
@@ -136,7 +138,7 @@ function renderProduct(product) {
     // Category badge
     const categoryBadge = document.createElement('span');
     categoryBadge.className = 'inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-green-600 text-white';
-    categoryBadge.textContent= getCategoryLabel(product.category);
+    categoryBadge.textContent = getCategoryLabel(product.category);
     badgesContainer.appendChild(categoryBadge);
     
     // Featured badge
@@ -148,8 +150,8 @@ function renderProduct(product) {
     }
     
     // Set date and views
-    productStock.textContent = `${product.stock} stock`;
-    productPrice.textContent = `RP. ${product.price} `;
+    articleStock.textContent = `stock: ${product.stock} `;
+    articlePrice.textContent = `RP. ${product.price} `;
     
     // Set featured image
     if (product.thumbnail) {
@@ -161,11 +163,11 @@ function renderProduct(product) {
     }
     
     // Set content
-    productDescriptionText.textContent = product.description;
+    articleDescriptionText.textContent = product.description;
     
     // Set author
-    const sellerName = product.user_username || 'Anonymous';
-    productSeller.textContent = `Seller: ${sellerName}`;
+    const authorName = product.user_username || 'Anonymous';
+    articleSeller.textContent = `Seller: ${authorName}`;
 }
 
 // Fetch news detail
@@ -178,14 +180,14 @@ async function loadProductDetail() {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch product detail');
+            throw new Error('Failed to fetch news detail');
         }
 
         const productData = await response.json();
-        renderProduct(productData);
+        renderArticle(productData);
         showState('ready');
     } catch (error) {
-        console.error('Error loading product detail:', error);
+        console.error('Error loading news detail:', error);
         showState('error');
     }
 }
@@ -193,5 +195,4 @@ async function loadProductDetail() {
 // Initialize page
 loadProductDetail();
 </script>
-...
 {% endblock content %}
